@@ -18,7 +18,7 @@ def index():
 **Run this command** 
 - uvicorn my-api:app 
 
-## my-api is the name of the file in which my code exists
+**my-api is the name of the file in which my code exists**
 
 
 **Swagger UI**
