@@ -1,8 +1,12 @@
-#Introduction to FastAPI 
+# Introduction to FastAPI 
+I just started learning FastAPI. Believe it or not, it is really fast!
+How long am gonna stick to it? Depends on the job offers!
 
 **Run these two commands as the step zero**
 - pip install fastapi
 - pip install uvicorn 
+
+Now you can write your first api!
 
 ```python
 
