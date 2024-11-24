@@ -1,6 +1,7 @@
-from fastapi import FastAPI,HTTPException
+from fastapi import FastAPI,HTTPException,Query,Path 
 from enum import Enum
 from schemas import GenreURLChoices,BandBase,BandCreate,BandwithID
+from typing import Annotated
 
 app = FastAPI()
 
@@ -23,23 +24,19 @@ class GenreURLChoices(Enum):
 
 
 @app.get('/bands')
-async def bands(genre: GenreURLChoices | None = None,
-                has_albums: bool = False) -> list[BandwithID]: # this is called a handles func
+async def bands(genre: GenreURLChoices | None = None,q:Annotated[str | None,Query(max_length=10)]= None) -> list[BandwithID]: # this is called a handles func
     band_list = [BandwithID(**b) for b in BANDS ]
     
     if genre:
-        return [
-            # Band(**b) for b in BANDS if b['genre'].lower() == genre.value
-            b for b in band_list if b.genre.lower() == genre.value
-        ]
-    if has_albums:
-        band_list = [b for b in band_list if len(b.album) > 0]
-
+        # Band(**b) for b in BANDS if b['genre'].lower() == genre.value
+        band_list= [ b for b in band_list if b.genre.lower() == genre.value ]
         
+    
+  
     return band_list
 
 @app.get('/bands/{band_id}')
-async def band(band_id:int) -> BandwithID:
+async def band(band_id: Annotated[int,Path('the band id')]) -> BandwithID:
     band = next((BandwithID(**b) for b in BANDS if b['id']==band_id),None)
     if band is None:
         return HTTPException(status_code=404,detail='Band not found')
