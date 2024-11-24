@@ -3,5 +3,12 @@ Content-Type: application/json
 
 {
     "name":"eminem",
-    "genre":"Rap"
+    "genre":"Hip-Hop",
+    "album":[
+        {"title":"Master of reality","release_date":"1997-01-01"}]
 }
+
+
+
+###
+GET http://localhost:8000/bands/
