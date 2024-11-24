@@ -10,13 +10,13 @@ from contextlib import asynccontextmanager
 
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    init_db()
-    yield
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     init_db()
+#     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 BANDS = [
     {'id':1,'name':'The Kinks','genre':'Rock',},
