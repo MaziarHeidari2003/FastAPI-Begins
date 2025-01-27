@@ -1,30 +1,24 @@
-from fastapi import APIRouter,HTTPException,status
-from .. import schemas,database,models,token
-from fastapi import Depends
+from fastapi import APIRouter,Depends,HTTPException,status
+from .. import schemas,models
 from sqlalchemy.orm import Session
-from ..hashing import Hash
-from datetime import timedelta
-from fastapi.security import OAuth2PasswordRequestForm
-
+from ..database import get_db 
+from ..hash import Hash
 
 router = APIRouter(
-    tags=['Authentication']
+    tags=['/login']
 )
 
-
-@router.post('/login')
-def login(request:OAuth2PasswordRequestForm = Depends(),db:Session = Depends(database.get_db)):
-    user = db.query(models.User).filter(models.User.email == request.username).first()
+def login(request: schemas.Login,db: Session=Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == request.username)
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Invalid credentials")
-    if not Hash.verify(user.password,request.password):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"Password not right")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='not found')
+    
+    if not Hash.verify(user.pasword,request.password):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail='not found')
+    
+    return user
 
-    access_token_expires = timedelta(minutes=30)
-    access_token = token.create_access_token(
-        data={"sub": user.email},
-        expires_delta=access_token_expires,
-    )
-    return {"access_token":access_token, "token_type":"bearer"}
+
+
+
+    return 'login'
