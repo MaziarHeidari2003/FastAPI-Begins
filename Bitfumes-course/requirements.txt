@@ -2,4 +2,4 @@ fastapi
 uvicorn
 sqlalchemy
 passlib
-bycript==3.2.2
+bcrypt==3.2.2
